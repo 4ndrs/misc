@@ -3,7 +3,7 @@
 # restore.py:
 #       A simple script to serialize database into yaml, or json
 #
-# Copyright (c)
+# Copyright (c) 2022
 # Andres Eloy Rivera Garcia
 #
 # SPDX-License-Identifier: MIT

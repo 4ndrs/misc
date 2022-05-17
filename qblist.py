@@ -34,7 +34,7 @@ else            : result = subprocess.run(['ls', '-la', '--recursive', path], ca
 if result.returncode != 0 and result.returncode != 1:
     print(result.stderr.decode(), end='', file=sys.stderr)
     sys.exit(result.returncode)
-elif result.returncode == 1: print(result.stderr.decode(), file=sys.stderr) # permission denied
+elif result.returncode == 1: print(result.stderr.decode(), end='', file=sys.stderr) # permission denied
 
 files   = []
 header  = None

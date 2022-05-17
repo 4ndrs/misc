@@ -16,14 +16,17 @@ import os
 
 # Usage: ./% /path/to/files
 #        ./% /path/to/files -R
+#        ./% /path/to/files -R --limit 10
 if len(sys.argv) < 2:
     print(f'{sys.argv[0]}: No arguments given', file=sys.stderr)
     sys.exit(1)
 
 recursive   = False
+limit       = None
 path        = os.path.realpath(sys.argv[1]) # For link dereferencing support
 
 if len(sys.argv) > 2 and sys.argv[2] == '-R': recursive = True
+if len(sys.argv) > 4 and sys.argv[3] == '--limit' and sys.argv[4].isnumeric(): limit = int(sys.argv[4])
 
 if not recursive: result = subprocess.run(['ls', '-la', path], capture_output=True)
 else            : result = subprocess.run(['ls', '-la', '--recursive', path], capture_output=True)
@@ -45,8 +48,10 @@ for line in result.stdout.decode().split('\n'):
 
 files.sort(reverse=True)
 
+if limit is None: limit = len(files) - 1
+
 print(f'{"Size":>10} - Filename')
-for file in files:
+for file in files[:limit]:
     size, filename = file
 
     if   (size / 1.074e+9) > 1: size = f'{size / 1.074e+9:.0f}' + 'GiB'

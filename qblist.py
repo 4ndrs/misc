@@ -31,9 +31,10 @@ if len(sys.argv) > 4 and sys.argv[3] == '--limit' and sys.argv[4].isnumeric(): l
 if not recursive: result = subprocess.run(['ls', '-la', path], capture_output=True)
 else            : result = subprocess.run(['ls', '-la', '--recursive', path], capture_output=True)
 
-if result.returncode != 0:
+if result.returncode != 0 and result.returncode != 1:
     print(result.stderr.decode(), end='', file=sys.stderr)
     sys.exit(result.returncode)
+elif result.returncode == 1: print(result.stderr.decode(), file=sys.stderr) # permission denied
 
 files   = []
 header  = None

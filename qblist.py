@@ -9,29 +9,38 @@
 #
 # SPDX-License-Identifier: MIT
 #
-from os.path import realpath
 import subprocess
 import sys
 import re
+import os
 
 # Usage: ./% /path/to/files
+#        ./% /path/to/files -R
 if len(sys.argv) < 2:
     print(f'{sys.argv[0]}: No arguments given', file=sys.stderr)
     sys.exit(1)
 
-path    = realpath(sys.argv[1]) # For link dereferencing support
-result  = subprocess.run(['ls', '-la', path], capture_output=True)
+recursive   = False
+path        = os.path.realpath(sys.argv[1]) # For link dereferencing support
+
+if len(sys.argv) > 2 and sys.argv[2] == '-R': recursive = True
+
+if not recursive: result = subprocess.run(['ls', '-la', path], capture_output=True)
+else            : result = subprocess.run(['ls', '-la', '--recursive', path], capture_output=True)
 
 if result.returncode != 0:
     print(result.stderr.decode(), end='', file=sys.stderr)
     sys.exit(result.returncode)
 
 files   = []
+header  = None
 pattern = r'.*[ ]+([\d]+)[ ]+[\w]{3}[ ]+[\d]{,2}[ ]+[\d]{2}[:]{,1}[\d]{2}[ ]+(.+)'
 
 for line in result.stdout.decode().split('\n'):
+    if recursive and re.match('^\./|^/', line): header = line[:-1]
     if not line.startswith('-'): continue # Process only regular files
     size, filename = re.search(pattern, line).groups()
+    if recursive: filename = os.path.join(header, filename)
     files.append((int(size), filename))
 
 files.sort(reverse=True)

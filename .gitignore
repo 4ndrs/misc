@@ -1,1 +1,3 @@
 *.swp
+.md5list.yaml
+__pycache__

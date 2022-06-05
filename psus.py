@@ -4,7 +4,14 @@
 # Andres Eloy Rivera Garcia
 #
 # SPDX-License-Identifier: MIT
-"""Change the status of a given process (or a group of processes) sending SIGSTOP/SIGCONT"""
+"""Change the status of a given process (or a group of processes) sending SIGSTOP/SIGCONT.
+
+   Usage: ./% firefox suspend
+          ./% firefox continue
+
+   The script will search for processes with the string in the first command-line argument
+   and execute the action specified in the second command-line argument.
+"""
 
 import sys
 from os import getpid

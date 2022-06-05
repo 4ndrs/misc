@@ -6,8 +6,8 @@
 # SPDX-License-Identifier: MIT
 """Change the status of a given process (or a group of processes) sending SIGSTOP/SIGCONT.
 
-   Usage: ./% firefox suspend
-          ./% firefox continue
+   Usage: psus firefox suspend
+          psus firefox continue
 
    The script will search for processes with the string in the first command-line argument
    and execute the action specified in the second command-line argument.

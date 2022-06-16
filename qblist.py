@@ -55,7 +55,7 @@ for line in result.stdout.decode().split("\n"):
 files.sort(reverse=True)
 
 if LIMIT is None:
-    LIMIT = len(files) - 1
+    LIMIT = len(files)
 
 print(f'{"Size":>10} - Filename')
 for file in files[:LIMIT]:
